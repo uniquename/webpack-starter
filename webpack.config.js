@@ -5,6 +5,8 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 var LiveReloadPlugin = require('webpack-livereload-plugin');
 
 module.exports = {
@@ -17,6 +19,7 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')
   },
+  //devtool: "cheap-eval-source-map",
   module: {
     rules: [
       {
@@ -26,6 +29,10 @@ module.exports = {
           'css-loader'
         ]
       },
+      /*{
+        test: /\.html$/,
+        loader: "raw-loader" // loaders: ['raw-loader'] is also perfectly acceptable.
+      },*/
       {
       test: /\.scss$/,
         use: [{
@@ -46,6 +53,10 @@ module.exports = {
       }
     ]
   },
+  devServer: {
+    contentBase: './dist',
+    hot: true
+  },
   plugins: [
     new HtmlWebpackPlugin({
       filename: "index.html",
@@ -61,7 +72,8 @@ module.exports = {
       jQuery: 'jquery',
       'window.jQuery': 'jquery',
       Tether: 'tether'
-    })
+    }),
+    new ExtractTextPlugin("style.css")
     /*new HtmlWebpackPlugin({
       title: 'My App',
       filename: 'src/test.html'
